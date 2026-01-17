@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuestMate - Gamified Peer-Powered Learning</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="landing-page">
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <h1>⚔️ QuestMate</h1>
+                <p>Gamified Peer-Powered Learning</p>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#cta">Get Started</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container hero-content">
+            <h2>Learn Skills. Earn XP. Build Streaks.</h2>
+            <p>Join QuestMate: A gamified learning platform where college students complete daily micro-tasks, build streaks, and get mentored by peers who've mastered the skills.</p>
+            <button onclick="document.getElementById('auth-modal').style.display='block'" class="cta-btn">Start Your Quest</button>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="container">
+            <h3>Why QuestMate?</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="icon">🎮</div>
+                    <h4>Gamified Learning</h4>
+                    <p>Earn XP, unlock levels, build streaks, and compete on leaderboards</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🛡️</div>
+                    <h4>Consistency Shields</h4>
+                    <p>Pause progress during exams without losing your rank and XP</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">👥</div>
+                    <h4>Peer Mentorship</h4>
+                    <p>Get matched with experienced peers from your college who can help</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">⚡</div>
+                    <h4>Micro-Tasks</h4>
+                    <p>15-30 min daily challenges designed for busy student schedules</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">📈</div>
+                    <h4>Progress Tracking</h4>
+                    <p>Visualize your learning journey with comprehensive dashboards</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🏆</div>
+                    <h4>Skill Mastery</h4>
+                    <p>Master Python, Web Dev, DSA, UI/UX with structured roadmaps</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <h3>How It Works</h3>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <h4>Sign Up</h4>
+                    <p>Create your account with your college info</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <h4>Choose a Skill</h4>
+                    <p>Pick from Python, Web Dev, DSA, or UI/UX</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <h4>Complete Tasks</h4>
+                    <p>Solve daily micro-tasks and earn XP</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <h4>Build Your Streak</h4>
+                    <p>Stay consistent and unlock consistency shields</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">5</div>
+                    <h4>Get Mentored</h4>
+                    <p>Connect with peers who've mastered the skill</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">6</div>
+                    <h4>Become a Mentor</h4>
+                    <p>Help others and cement your mastery</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="cta" class="cta-section">
+        <div class="container">
+            <h3>Ready to Level Up?</h3>
+            <p>Join thousands of college students mastering new skills daily</p>
+            <button onclick="document.getElementById('auth-modal').style.display='block'" class="cta-btn">Start Free Today</button>
+        </div>
+    </section>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="document.getElementById('auth-modal').style.display='none'">&times;</span>
+            <h3>Login / Sign Up</h3>
+            <form method="POST" action="/auth">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <input type="text" name="college" placeholder="Your College (Optional)">
+                <button type="submit" class="btn-primary">Enter QuestMate</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 QuestMate. Built for students, by students.</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

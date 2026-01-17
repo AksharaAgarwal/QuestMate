@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onboarding - QuestMate</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="onboarding-page">
+    <div class="container">
+        <div class="onboarding-card">
+            <h2>Welcome to QuestMate! 🎮</h2>
+            <p>Let's start your learning journey. Choose a skill and starting level.</p>
+
+            <form method="POST" class="onboarding-form" onsubmit="return validateForm()">
+                <div class="form-group">
+                    <label>Choose Your Skill:</label>
+                    <div class="skill-grid">
+                        {% for skill_name, skill_data in skills.items() %}
+                        <label class="skill-option">
+                            <input type="radio" name="skill" value="{{ skill_name }}" required onchange="updateLevels('{{ skill_name }}')">
+                            <div class="skill-card">
+                                <div class="skill-icon">{{ skill_data.icon }}</div>
+                                <h4>{{ skill_name }}</h4>
+                                <p>{{ skill_data.description }}</p>
+                            </div>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Starting Level:</label>
+                    <div class="level-options">
+                        <label><input type="radio" name="level" value="1" checked required> 🟢 Beginner (Level 1)</label>
+                        <label><input type="radio" name="level" value="3" required> 🟡 Intermediate (Level 3)</label>
+                        <label><input type="radio" name="level" value="5" required> 🔴 Advanced (Level 5)</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary btn-large">Start Learning</button>
+            </form>
+
+            <script>
+                function validateForm() {
+                    const skillSelected = document.querySelector('input[name="skill"]:checked');
+                    const levelSelected = document.querySelector('input[name="level"]:checked');
+                    
+                    if (!skillSelected) {
+                        alert('Please select a skill!');
+                        return false;
+                    }
+                    if (!levelSelected) {
+                        alert('Please select a level!');
+                        return false;
+                    }
+                    return true;
+                }
+                
+                function updateLevels(skill) {
+                    console.log('Selected skill:', skill);
+                }
+            </script>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

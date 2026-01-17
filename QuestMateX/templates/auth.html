@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth - QuestMate</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body style="display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, var(--dark-bg) 0%, #1a1f3a 100%);">
+    <div class="onboarding-card" style="max-width: 400px;">
+        <h2 style="text-align: center;">🎮 Welcome to QuestMate</h2>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Login or create account to start your quest</p>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div style="padding: 0.75rem; margin-bottom: 1rem; border-radius: 8px; {% if category == 'error' %}background-color: #ff4757; color: white;{% else %}background-color: #2ed573; color: white;{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <form method="POST" action="/auth">
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Username</label>
+                <input type="text" name="username" placeholder="Choose a username" required style="width: 100%; padding: 0.75rem; background-color: var(--dark-bg); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary);">
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Password</label>
+                <input type="password" name="password" placeholder="Enter password" required style="width: 100%; padding: 0.75rem; background-color: var(--dark-bg); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary);">
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">College (Optional)</label>
+                <input type="text" name="college" placeholder="Your college name" style="width: 100%; padding: 0.75rem; background-color: var(--dark-bg); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary);">
+            </div>
+
+            <button type="submit" class="btn-primary btn-large">Enter QuestMate</button>
+        </form>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

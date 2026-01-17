@@ -1,0 +1,32 @@
+{
+    "Akshara": {
+        "xp": 150,
+        "streak": 3,
+        "shields": 1,
+        "current_skill": "Python",
+        "levels": {
+            "Python": 1,
+            "HTML": 5
+        },
+        "notifications": [],
+        "last_login": "2026-01-18",
+        "password": "1234",
+        "college": ""
+    },
+    "Alex": {
+        "xp": 0,
+        "streak": 0,
+        "shields": 1,
+        "current_skill": "Python",
+        "levels": {
+            "Python": 1
+        },
+        "notifications": [],
+        "last_login": "2026-01-18",
+        "password": "1234",
+        "college": "",
+        "chat_history": {
+            "Akshara": []
+        }
+    }
+}

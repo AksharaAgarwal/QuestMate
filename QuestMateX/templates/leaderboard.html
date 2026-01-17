@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - QuestMate</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="leaderboard-page">
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">⚔️ QuestMate</h1>
+            <ul class="nav-links">
+                <li><strong>{{ current_user }}</strong></li>
+                <li><a href="/dashboard">← Dashboard</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container leaderboard-container">
+        <h2 style="text-align: center; margin-bottom: 2rem;">🏆 Global Leaderboard</h2>
+
+        <table class="leaderboard-table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Player</th>
+                    <th>XP</th>
+                    <th>Streak</th>
+                    <th>Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in leaderboard %}
+                    <tr>
+                        <td>
+                            {% if loop.index == 1 %}
+                                <span class="rank-badge rank-1">1</span>
+                            {% elif loop.index == 2 %}
+                                <span class="rank-badge rank-2">2</span>
+                            {% elif loop.index == 3 %}
+                                <span class="rank-badge rank-3">3</span>
+                            {% else %}
+                                <span class="rank-badge">#{{ loop.index }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if entry.username == current_user %}
+                                <strong style="color: var(--primary-color);">{{ entry.username }} (You)</strong>
+                            {% else %}
+                                {{ entry.username }}
+                            {% endif %}
+                        </td>
+                        <td><strong>{{ entry.xp }}</strong> XP</td>
+                        <td>🔥 {{ entry.streak }}</td>
+                        <td>{{ entry.level }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

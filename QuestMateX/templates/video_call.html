@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Call - QuestMate</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .video-call-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background-color: var(--dark-bg);
+        }
+        
+        .video-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .back-link {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .back-link:hover {
+            opacity: 0.8;
+        }
+        
+        .video-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        
+        .video-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 1000px;
+            height: 100%;
+            max-height: 600px;
+        }
+        
+        .video-stream {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .video-stream.local {
+            border: 3px solid var(--primary-color);
+        }
+        
+        .video-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            gap: 1rem;
+        }
+        
+        .video-placeholder h3 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+        
+        .video-placeholder p {
+            margin: 0;
+            opacity: 0.8;
+            font-size: 0.95rem;
+        }
+        
+        .video-icon {
+            font-size: 4rem;
+            opacity: 0.6;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 2rem;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+        
+        .control-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .control-btn.mic {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .control-btn.mic:hover {
+            background-color: #45a049;
+            transform: scale(1.1);
+        }
+        
+        .control-btn.video {
+            background-color: #2196F3;
+            color: white;
+        }
+        
+        .control-btn.video:hover {
+            background-color: #0b7dda;
+            transform: scale(1.1);
+        }
+        
+        .control-btn.end {
+            background-color: #f44336;
+            color: white;
+        }
+        
+        .control-btn.end:hover {
+            background-color: #da190b;
+            transform: scale(1.1);
+        }
+        
+        .control-btn.off {
+            opacity: 0.5;
+        }
+        
+        .call-info {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .call-duration {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .call-status {
+            padding: 1rem;
+            text-align: center;
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="video-call-page">
+    <div class="video-call-container">
+        <div class="video-header">
+            <a href="/mentor/chat/{{ mentor }}" class="back-link">← Back to Chat</a>
+            <h2>📹 Video Call with {{ mentor }}</h2>
+            <div></div>
+        </div>
+        
+        <div class="video-content">
+            <div>
+                <div class="call-status">
+                    ✓ Connected to {{ mentor }}
+                </div>
+                
+                <div class="call-info">
+                    <div class="call-duration" id="callDuration">00:00</div>
+                </div>
+                
+                <div class="video-box">
+                    <div class="video-stream local">
+                        <div class="video-placeholder">
+                            <div class="video-icon">📱</div>
+                            <h3>You</h3>
+                            <p>Your camera feed</p>
+                        </div>
+                    </div>
+                    
+                    <div class="video-stream">
+                        <div class="video-placeholder">
+                            <div class="video-icon">📹</div>
+                            <h3>{{ mentor }}</h3>
+                            <p>Mentor's camera feed</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="controls">
+                    <button class="control-btn mic" id="micBtn" onclick="toggleMic()" title="Toggle Microphone">
+                        🎤
+                    </button>
+                    <button class="control-btn video" id="videoBtn" onclick="toggleVideo()" title="Toggle Video">
+                        📹
+                    </button>
+                    <button class="control-btn end" onclick="endCall()" title="End Call">
+                        ☎️
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let callStartTime = Date.now();
+        let micOn = true;
+        let videoOn = true;
+        
+        // Update call duration
+        setInterval(() => {
+            const elapsed = Math.floor((Date.now() - callStartTime) / 1000);
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+            document.getElementById('callDuration').textContent = 
+                String(minutes).padStart(2, '0') + ':' + 
+                String(seconds).padStart(2, '0');
+        }, 1000);
+        
+        function toggleMic() {
+            const btn = document.getElementById('micBtn');
+            micOn = !micOn;
+            btn.classList.toggle('off');
+            btn.textContent = micOn ? '🎤' : '🔇';
+            console.log('Microphone:', micOn ? 'ON' : 'OFF');
+        }
+        
+        function toggleVideo() {
+            const btn = document.getElementById('videoBtn');
+            videoOn = !videoOn;
+            btn.classList.toggle('off');
+            btn.textContent = videoOn ? '📹' : '🚫';
+            console.log('Video:', videoOn ? 'ON' : 'OFF');
+        }
+        
+        function endCall() {
+            const duration = document.getElementById('callDuration').textContent;
+            if (confirm('End the call? Duration: ' + duration)) {
+                window.location.href = '/mentor/chat/{{ mentor }}';
+            }
+        }
+    </script>
+</body>
+</html>

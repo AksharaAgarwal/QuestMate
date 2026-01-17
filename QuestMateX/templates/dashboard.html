@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - QuestMate</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dashboard-page">
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">⚔️ QuestMate</h1>
+            <ul class="nav-links">
+                <li><strong>{{ session.get('user', 'Player') }}</strong></li>
+                <li><a href="/leaderboard">🏆 Leaderboard</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container dashboard-container">
+        <div class="sidebar">
+            <div class="stats-panel">
+                <h3>Your Stats</h3>
+                <div class="stat">
+                    <span class="label">XP</span>
+                    <span class="value">{{ user.xp | default(0) }}</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Streak 🔥</span>
+                    <span class="value">{{ user.streak | default(0) }} days</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Shields 🛡️</span>
+                    <span class="value">{{ user.shields | default(1) }}</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Level</span>
+                    <span class="value">{{ lvl | default(1) }}</span>
+                </div>
+            </div>
+
+            <div class="actions-panel">
+                <h3>Actions</h3>
+                <button onclick="openModal('task-modal')" class="btn-secondary btn-block">📋 View Task</button>
+                <button onclick="openModal('shield-modal')" class="btn-secondary btn-block">🛡️ Consistency Shield</button>
+                <button onclick="openModal('mentor-modal')" class="btn-secondary btn-block">👥 Find Mentors</button>
+                <a href="/onboarding" class="btn-secondary btn-block">🎯 Switch Skill</a>
+            </div>
+
+            <div class="skill-info">
+                <h3>Current Skill</h3>
+                <div class="skill-badge">{{ skill | default('None') }}</div>
+                <p>{{ task.title | default('No task') }}</p>
+            </div>
+        </div>
+
+        <div class="main-content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <div class="task-panel">
+                <h2>Daily Quest 📝</h2>
+                {% if task %}
+                    <div class="task-card">
+                        <div class="task-header">
+                            <h3>{{ task.title }}</h3>
+                            <span class="task-time">⏱️ {{ task.time_est | default('15 min') }}</span>
+                        </div>
+                        <div class="task-body">
+                            <p class="task-desc"><strong>Challenge:</strong></p>
+                            <pre class="code-block">{{ task.desc }}</pre>
+                            {% if task.hint %}
+                                <div style="background: #f0f7ff; padding: 1rem; border-left: 4px solid #2196F3; margin: 1rem 0; border-radius: 4px;">
+                                    <p><strong>💡 Hint:</strong> {{ task.hint }}</p>
+                                </div>
+                            {% endif %}
+                            <p class="task-explanation"><strong>Expected Output:</strong></p>
+                            <pre class="code-block" style="background: #e8f5e9;">{{ task.expected }}</pre>
+                            {% if task.is_test %}
+                                <span class="badge-test">🎯 MILESTONE TEST</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="code-submission">
+                        <h3>Submit Your Solution</h3>
+                        <form method="POST" action="/verify" class="submission-form">
+                            <textarea name="code" placeholder="Enter your code here..." rows="10" required></textarea>
+                            <div class="form-actions">
+                                <button type="submit" class="btn-primary">Submit Solution</button>
+                                <button type="button" class="btn-secondary" onclick="resetCode()">Clear</button>
+                            </div>
+                        </form>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        <h3>🎉 Congratulations!</h3>
+                        <p>You've completed all tasks in this skill! Switch to another skill to continue learning.</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            {% if mentors %}
+                <div class="mentors-panel">
+                    <h2>Available Mentors 👥</h2>
+                    <div class="mentor-grid">
+                        {% for mentor in mentors %}
+                            <div class="mentor-card">
+                                <h4>👨‍🏫 {{ mentor }}</h4>
+                                <p>Can help you with {{ skill }}</p>
+                                <div style="margin-top: 10px; display: flex; gap: 8px; flex-direction: column;">
+                                    <form method="POST" action="/request_help/{{ mentor }}" style="margin: 0;">
+                                        <button type="submit" class="btn-secondary btn-small" style="width: 100%;">Request Help</button>
+                                    </form>
+                                    <a href="/mentor/chat/{{ mentor }}" class="btn-secondary btn-small" style="text-align: center; text-decoration: none; width: 100%; box-sizing: border-box;">💬 Open Chat</a>
+                                    <a href="/mentor/video_call/{{ mentor }}" class="btn-secondary btn-small" style="text-align: center; text-decoration: none; width: 100%; box-sizing: border-box;">📞 Video Call</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <!-- Task Modal -->
+    <div id="task-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('task-modal')">&times;</span>
+            <h3>Current Quest</h3>
+            <p><strong>Task:</strong> {{ task.desc | default('No task') }}</p>
+            <p><strong>Expected Output:</strong></p>
+            <pre class="code-block">{{ task.expected | default('') }}</pre>
+        </div>
+    </div>
+
+    <!-- Shield Modal -->
+    <div id="shield-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('shield-modal')">&times;</span>
+            <h3>Consistency Shield 🛡️</h3>
+            <p>Pause your progress during exams without losing rank or XP.</p>
+            <p>Available Shields: <strong>{{ user.shields | default(1) }}</strong></p>
+            {% if user.shield_paused_until %}
+                <p style="color: #ff9800;">Progress paused until {{ user.shield_paused_until }}</p>
+                <form method="POST" action="/resume_progress">
+                    <button type="submit" class="btn-primary">Resume Progress</button>
+                </form>
+            {% else %}
+                <form method="POST" action="/activate_shield" style="margin-top: 15px;">
+                    <input type="text" name="reason" placeholder="Reason (exam, health, etc.)" required style="margin-bottom: 10px; width: 100%; padding: 8px;">
+                    <select name="days" style="margin-bottom: 10px; width: 100%; padding: 8px;">
+                        <option value="3">3 days</option>
+                        <option value="7" selected>7 days</option>
+                        <option value="14">2 weeks</option>
+                        <option value="30">1 month</option>
+                    </select>
+                    <button type="submit" class="btn-primary">Activate Shield</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Mentor Modal -->
+    <div id="mentor-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('mentor-modal')">&times;</span>
+            <h3>👥 Find Mentors & Connect</h3>
+            {% if mentors %}
+                <p><strong>Available Mentors for {{ skill }}:</strong></p>
+                <div style="display: grid; gap: 10px;">
+                    {% for mentor in mentors %}
+                        <div style="padding: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; margin: 5px 0; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                            <span><strong>👨‍🏫 {{ mentor }}</strong></span>
+                            <div style="display: flex; gap: 5px;">
+                                <a href="/mentor/chat/{{ mentor }}" style="padding: 5px 10px; background: white; color: #667eea; text-decoration: none; border-radius: 5px; font-size: 0.85rem; font-weight: bold;">💬 Chat</a>
+                                <a href="/mentor/video_call/{{ mentor }}" style="padding: 5px 10px; background: white; color: #667eea; text-decoration: none; border-radius: 5px; font-size: 0.85rem; font-weight: bold;">📞 Call</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>❌ No mentors available yet for {{ skill }}.</p>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">Keep learning and advancing levels to find mentors!</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
