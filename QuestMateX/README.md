@@ -1,5 +1,8 @@
 # QuestMate - Gamified Peer-Powered Learning Platform
 
+🏆 **Built for:** Snowstorm Hackathon organized by Tech4Hack
+👥 **Team:** Skillforge
+
 A comprehensive full-stack web application designed for college students to learn programming and technical skills through gamified, peer-mentored micro-tasks.
 
 ## 🎮 Features
@@ -7,12 +10,12 @@ A comprehensive full-stack web application designed for college students to lear
 ### 1. **Gamification System**
 - **XP Points**: Earn XP for completing tasks (50 XP for regular tasks, 100 XP for milestone tests)
 - **Streaks**: Build daily streaks to maintain consistency and motivation
-- **Levels**: Progress through structured skill roadmaps (1-10 levels per skill)
+- **Levels**: Progress through structured skill roadmaps
 - **Leaderboards**: Compete globally and see rankings by XP, streak, and skill level
 - **Milestones**: Unlock special achievements and consistency shields
 
 ### 2. **Consistency Shield System** ⭐
-- **Pause Without Penalty**: Use consistency shields to pause progress during exams or personal emergencies (3-90 days)
+- **Pause Without Penalty**: Use consistency shields to pause progress during exams or personal emergencies 
 - **Earn Through Streaks**: Earn new shields every 7-day streak milestone
 - **Protect Rank**: When shield is active, XP and rank remain frozen (neither gain nor lose)
 - **Flexible Duration**: Customize pause duration based on your needs
@@ -72,27 +75,6 @@ QuestMateX/
     └── app.py                 # REST API endpoints (optional)
 ```
 
-## 🚀 Quick Start
-
-### 1. **Installation**
-```bash
-cd QuestMateX
-pip install -r requirements.txt
-```
-
-### 2. **Run the Application**
-```bash
-python app.py
-```
-
-The app will start at `http://localhost:5001`
-
-### 3. **Access the Platform**
-- Open browser to `http://localhost:5001`
-- Click "Start Your Quest" to login/signup
-- Choose a skill and starting level
-- Begin completing daily tasks!
-
 ## 💻 Technology Stack
 
 ### Backend
@@ -126,7 +108,7 @@ The app will start at `http://localhost:5001`
 
 ### Consistency Shield Activation
 1. User clicks "Consistency Shield" button
-2. Selects reason (exam, health, personal) and duration (3-90 days)
+2. Selects reason (exam, health, personal) and duration (3-7 days)
 3. Shield activated - progress frozen
 4. During shield period:
    - Streak doesn't reset even if user doesn't complete tasks
@@ -217,50 +199,10 @@ The app will start at `http://localhost:5001`
 - **Student-First**: Clean, minimal interface without distractions
 - **Gamified**: Visual feedback (XP, streaks, badges) for motivation
 - **Inclusive**: No payment barriers, pure skill-based progression
-- **Accessible**: High contrast, keyboard shortcuts (Escape, Ctrl+Enter)
+  
+## 👥 Team Members
 
-## ⚙️ Configuration
-
-Edit `.env` file to customize:
-```
-FLASK_ENV=development     # Set to 'production' for deployment
-DEBUG=True               # Set to False in production
-SECRET_KEY=<your-key>    # Change in production
-JWT_SECRET_KEY=<your-key> # Change in production
-```
-
-## 🐛 Troubleshooting
-
-**Issue**: "ModuleNotFoundError: No module named 'flask'"
-- Solution: `pip install -r requirements.txt`
-
-**Issue**: "Port 5001 already in use"
-- Solution: Change port in `app.py`: `app.run(port=5002)`
-
-**Issue**: Tasks not executing
-- Solution: Check Python code syntax, ensure print statements output matches expected
-
-**Issue**: Streak not updating
-- Solution: Ensure `last_login` date is set, complete task between midnight UTC
-
-## 📞 Support & Contributing
-
-For issues, feature requests, or contributions:
-1. Document your issue clearly
-2. Test with latest version
-3. Submit pull request with improvements
-
-## 📄 License
-
-This project is open-source and available for educational use. Built for hackathon submission.
-
-## 🙏 Credits
-
-- Designed for college students by college students
-- Inspired by Duolingo, LeetCode, and peer learning communities
-- Special thanks to the QuestMate community
-
----
-
-**QuestMate v1.0** | MVP Ready | Hackathon Submission | 2026
-
+- Akshara Agarwal
+- Harshita Tyagi
+- Om Aggarwal
+- Sagar 
